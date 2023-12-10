@@ -7,8 +7,9 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -27,15 +28,17 @@ public class PasatiempoController {
 	private UsuarioService usuarioService;
 	
 	@ResponseBody
-	@GetMapping("/listaPasatiempoPorUsuario")
-	public List<Pasatiempo> listaPasatiempoPorUsuario(int idUsuario){
+	@GetMapping("/listaPasatiempoPorUsuario/{id}")
+	public List<Pasatiempo> listaPasatiempoPorUsuario(@PathVariable("id")int idUsuario){
 		return  usuarioService.traerPasatiempoDeUsuario(idUsuario);
 	}
 
 	
 	@ResponseBody
-	@PostMapping("/registraPasatiempo")
-	public HashMap<String, Object> registro(int idUsuario, int idPasatiempo){
+	@GetMapping("/registraPasatiempo")
+	public HashMap<String, Object> registro(
+			@RequestParam(name = "idUsuario" , defaultValue = "-1" , required = true)int idUsuario, 
+			@RequestParam(name = "idPasatiempo" , defaultValue = "-1" , required = true)int idPasatiempo){
 		HashMap<String, Object> maps = new HashMap<String, Object>();
 		UsuarioHasPasatiempoPK pk = new UsuarioHasPasatiempoPK();
 		pk.setIdPasatiempo(idPasatiempo);
@@ -57,13 +60,14 @@ public class PasatiempoController {
         }
         List<Pasatiempo> lstPasatiempo =  usuarioService.traerPasatiempoDeUsuario(idUsuario);
         maps.put("lista", lstPasatiempo);
-        maps.put("usuario", idUsuario);
 		return maps;
 	}
 	
 	@ResponseBody
-	@PostMapping("/eliminaPasatiempo")
-	public HashMap<String, Object> elimina(int idUsuario, int idPasatiempo){
+	@GetMapping("/eliminaPasatiempo")
+	public HashMap<String, Object> elimina(
+			@RequestParam(name = "idUsuario" , defaultValue = "-1" , required = true)int idUsuario, 
+			@RequestParam(name = "idPasatiempo" , defaultValue = "-1" , required = true)int idPasatiempo){
 		HashMap<String, Object> maps = new HashMap<String, Object>();
 		
 		UsuarioHasPasatiempoPK pk = new UsuarioHasPasatiempoPK();
@@ -78,8 +82,7 @@ public class PasatiempoController {
 		
 		List<Pasatiempo> lstPasatiempo =  usuarioService.traerPasatiempoDeUsuario(idUsuario);
         maps.put("lista", lstPasatiempo);
-        maps.put("usuario", idUsuario);
-		
+
 		return maps;
 	}
 	
