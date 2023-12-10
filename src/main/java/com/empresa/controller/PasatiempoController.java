@@ -6,16 +6,22 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.empresa.entidades.Pasatiempo;
 import com.empresa.entidades.UsuarioHasPasatiempo;
 import com.empresa.entidades.UsuarioHasPasatiempoPK;
 import com.empresa.service.UsuarioService;
+import com.empresa.util.AppSettings;
 
-@Controller
+@RestController
+@RequestMapping("/url/asignacionPasatiempo")
+@CrossOrigin(origins = AppSettings.URL_CROSS_ORIGIN)
 public class PasatiempoController {
 
 	@Autowired
