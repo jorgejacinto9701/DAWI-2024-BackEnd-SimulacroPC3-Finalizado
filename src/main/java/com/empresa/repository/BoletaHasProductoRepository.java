@@ -6,8 +6,9 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import com.empresa.entidades.BoletaHasProducto;
+import com.empresa.entidades.BoletaHasProductoPK;
 
-public interface BoletaHasProductoRepository extends JpaRepository<BoletaHasProducto, Integer> {
+public interface BoletaHasProductoRepository extends JpaRepository<BoletaHasProducto, BoletaHasProductoPK> {
 
 	@Modifying
 	@Query("update Producto x set x.stock = x.stock - :can where x.idProducto = :pro")
