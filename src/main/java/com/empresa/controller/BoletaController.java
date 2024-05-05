@@ -39,5 +39,41 @@ public class BoletaController {
 	private BoletaService boletaService;
 	
 	
+	@ResponseBody
+	@GetMapping("/listaCliente/{filtro}")
+	public List<Cliente> listaCliente(
+			@PathVariable("filtro")String filtro,
+			@RequestParam(name = "page" , defaultValue = "0" , required = false) int page,
+			@RequestParam(name = "size" , defaultValue = "5" , required = false) int size){
+		Pageable paginable = PageRequest.of(page, size);
+		List<Cliente> lstSalida = clienteService.listaCliente(filtro.equals("todos")?"%":filtro+"%", paginable);
+		return lstSalida;
+	}
+	
+	
+	@ResponseBody
+	@GetMapping("/listaProducto/{filtro}")
+	public List<Producto> listaProducto(
+			@PathVariable("filtro")String filtro,
+			@RequestParam(name = "page" , defaultValue = "0" , required = false) int page,
+			@RequestParam(name = "size" , defaultValue = "5" , required = false) int size){
+		Pageable paginable = PageRequest.of(page, size);
+		List<Producto> lstSalida = productoService.listaproducto(filtro.equals("todos")?"%":filtro+"%", paginable);
+		return lstSalida;
+	}
+	
+	@ResponseBody
+	@PostMapping("/registraBoleta")
+	public HashMap<String, Object> registraBoleta(@RequestBody Boleta objBoleta){
+		HashMap<String, Object> mapSalida = new HashMap<String, Object>();
+		Boleta objBoletaSalida = boletaService.insertaBoleta(objBoleta);
+		if (objBoletaSalida != null) {
+			mapSalida.put("mensaje", "Se registró la Boleta ==> " + objBoletaSalida.getIdboleta());
+			mapSalida.put("data", objBoletaSalida);
+		}else {
+			mapSalida.put("mensaje", "Error en el registro de Boleta");
+		}
+		return mapSalida;
+	}
 	
 }
